@@ -1,105 +1,61 @@
-/* GENEL */
-body {
-    margin: 0;
-    background: #111;
-    color: white;
-    font-family: Arial;
+:root{
+  --bg:#0b1220;
+  --card: rgba(255,255,255,0.04);
+  --accent:#00bfff;
+  --muted:#bfcbd6;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color:#fff;
+  min-height:100vh;
+}
+body.light{
+  --bg:#f4f6f8;
+  --card: #fff;
+  --accent:#0066cc;
+  color:#111;
+  background: #f4f6f8;
 }
 
-/* LIGHT MODE */
-body.light {
-    background: #f1f1f1;
-    color: #000;
-}
+/* header */
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 6%;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05))}
+header h1{margin:0;color:var(--accent);font-size:20px}
+.top-right{display:flex;align-items:center;gap:8px}
+#searchInput{padding:8px 12px;border-radius:8px;border:none;min-width:180px}
+#themeBtn{padding:8px;border-radius:8px;border:none;background:#222;color:#fff;cursor:pointer}
+.admin-link{background:transparent;color:var(--muted);text-decoration:none;padding:6px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03)}
 
-/* HEADER */
-header {
-    background: #00aaff;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-}
+/* categories */
+nav{display:flex;flex-wrap:wrap;gap:8px;padding:12px 6%;justify-content:center}
+nav button{background:rgba(255,255,255,0.03);color:var(--muted);border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+nav button.active{background:var(--accent);color:#001}
 
-header input {
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-}
+/* banners */
+.ad-banner{margin:18px auto;width:90%;padding:16px;border-radius:10px;text-align:center;background:rgba(255,255,255,0.03);color:var(--muted)}
 
-/* Tema butonu */
-#themeBtn {
-    margin-left: 10px;
-    font-size: 20px;
-    padding: 8px 12px;
-    border: none;
-    background: #222;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-}
+/* masonry-like columns */
+main.masonry{column-width:260px;column-gap:14px;padding:20px 6%}
+.card{display:inline-block;width:100%;margin:0 0 14px;background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .18s}
+.card img{width:100%;height:auto;display:block;object-fit:cover}
+.card .meta{padding:10px}
+.card h4{margin:0;font-size:15px}
+.card p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.card:hover{transform:translateY(-6px)}
 
-/* NAV */
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding: 15px;
-}
-nav button {
-    background: #222;
-    color: white;
-    border: 1px solid #444;
-    padding: 10px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-nav button:hover {
-    background: #00aaff;
-}
+/* loading */
+.loading{text-align:center;padding:20px;color:var(--muted);display:none}
 
-/* GALLERY */
-#gallery {
-    padding: 20px;
-    columns: 2;
-    gap: 10px;
-}
-#gallery img {
-    width: 100%;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-}
+/* detail */
+.detail-container{text-align:center;padding:20px}
+.detail-container img{max-width:95%;height:auto;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+.detail-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
+.btn{background:var(--accent);color:#001;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:700}
 
-/* PC */
-@media(min-width:700px){ #gallery{columns:3;} }
-@media(min-width:1100px){#gallery{columns:4;}}
-
-/* REKLAM */
-.ad-banner {
-    margin: 20px auto;
-    background: #333;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    width: 90%;
-    border-radius: 8px;
-}
-
-/* DETAIL */
-.detail-page img {
-    width: 95%;
-    margin-top: 20px;
-}
-.detail-page a {
-    display: inline-block;
-    margin-top: 20px;
-    background: #00aaff;
-    padding: 15px 30px;
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 20px;
+/* responsive */
+@media (max-width:600px){
+  main.masonry{column-width:140px}
+  #searchInput{min-width:110px}
 }
