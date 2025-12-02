@@ -1,51 +1,21 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duvar Kağıdı Dünyası</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Duvar Kağıdı Dünyası</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
-    <h1>Duvar Kağıdı Dünyası</h1>
+  <h1>📱 Duvar Kağıdı Dünyası</h1>
+  <input type="text" placeholder="Kategori ara (Örn: Doğa, Araba...)" 
+         onkeyup="loadWallpapers(this.value)">
 </header>
 
-<!-- ARAMA ÇUBUĞU -->
-<div class="search-box">
-    <input id="searchInput" type="text" placeholder="Aramak istediğin duvar kağıdı...">
-    <button onclick="searchImages()">Ara</button>
-</div>
+<div id="wallpaperContainer"></div>
 
-<!-- KATEGORİLER -->
-<div class="categories">
-    <button onclick="changeCategory('nature')">Doğa</button>
-    <button onclick="changeCategory('landscape')">Manzara</button>
-    <button onclick="changeCategory('cars')">Araba</button>
-    <button onclick="changeCategory('minimal')">Minimal</button>
-    <button onclick="changeCategory('anime')">Anime</button>
-    <button onclick="changeCategory('animals')">Hayvan</button>
-    <button onclick="changeCategory('city')">Şehir</button>
-    <button onclick="changeCategory('technology')">Teknoloji</button>
-    <button onclick="changeCategory('abstract')">Soyut</button>
-</div>
+<script src="script.js"></script>
 
-<!-- GALERİ -->
-<div id="gallery" class="gallery"></div>
-
-<!-- DETAY MODALI -->
-<div id="imageModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img id="modalImg" class="modal-content">
-    
-    <div class="modal-buttons">
-        <a id="downloadBtn" download>İndir</a>
-        <button id="favBtn" onclick="toggleFavorite()">❤️ Favorilere Ekle</button>
-    </div>
-</div>
-
-<script src="app.js"></script>
 </body>
 </html>
