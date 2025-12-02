@@ -1,49 +1,94 @@
-// Basit statik galeri + arama + "daha fazla" yüklemesi
-const gallery = document.getElementById('gallery');
-const searchInput = document.getElementById('search');
-const loadMoreBtn = document.getElementById('loadMore');
+let apiKey = "BURAYA_API_KEY_YAZ"; 
 
-const ITEMS = [
-  {id:'wall1',title:'Sisli Orman',author:'Unsplash',tags:['doğa'],src:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1600&q=80'},
-  {id:'wall2',title:'Neon Şehir',author:'Unsplash',tags:['neon','minimal'],src:'https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=1600&q=80'},
-  {id:'wall3',title:'Minimal Soyut',author:'Unsplash',tags:['minimal'],src:'https://images.unsplash.com/photo-1505678261036-a3fcc5e884ee?w=1600&q=80'},
-  {id:'wall4',title:'Dağ Gölü',author:'Unsplash',tags:['doğa'],src:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1600&q=80'},
-  {id:'wall5',title:'Siyah AMOLED',author:'Unsplash',tags:['amoled'],src:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1600&q=80'},
-  {id:'wall6',title:'Retro Oyun',author:'Unsplash',tags:['anime','oyun'],src:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600&q=80'},
-  {id:'wall7',title:'Gün Batımı',author:'Unsplash',tags:['doğa'],src:'https://images.unsplash.com/photo-1501973801540-537f08ccae7a?w=1600&q=80'},
-  {id:'wall8',title:'Mavi Soyut',author:'Unsplash',tags:['minimal'],src:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?w=1600&q=80'}
-];
+let currentCategory = "nature";
+let page = 1;
+let loading = false;
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-let shown = 0;
-function renderItems(list){
-  const fragment = document.createDocumentFragment();
-  list.forEach(item=>{
-    const a = document.createElement('a');
-    a.href = 'detail_'+item.id+'.html';
-    a.className='card';
-    a.innerHTML = `<img loading="lazy" src="${item.src}" alt="${item.title}"><div class="meta"><h4>${item.title}</h4><p>${item.author}</p></div>`;
-    fragment.appendChild(a);
-  });
-  gallery.appendChild(fragment);
+const gallery = document.getElementById("gallery");
+const modal = document.getElementById("imageModal");
+const modalImg = document.getElementById("modalImg");
+const downloadBtn = document.getElementById("downloadBtn");
+const favBtn = document.getElementById("favBtn");
+
+let currentImageUrl = "";
+
+async function loadWallpapers() {
+    if (loading) return;
+    loading = true;
+
+    const url = `https://api.unsplash.com/search/photos/?query=${currentCategory}&page=${page}&per_page=30&client_id=${apiKey}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    data.results.forEach(img => {
+        const image = document.createElement("img");
+        image.src = img.urls.small;
+        image.dataset.full = img.urls.full;
+        image.dataset.download = img.urls.raw;
+
+        image.onclick = () => openModal(image);
+
+        gallery.appendChild(image);
+    });
+
+    page++;
+    loading = false;
 }
 
-function loadMore(){
-  const next = ITEMS.slice(shown, shown+4);
-  renderItems(next);
-  shown += next.length;
-  if(shown >= ITEMS.length) loadMoreBtn.style.display='none';
+function changeCategory(cat) {
+    currentCategory = cat;
+    page = 1;
+    gallery.innerHTML = "";
+    loadWallpapers();
 }
 
-loadMoreBtn.onclick = loadMore;
-loadMore(); // ilk yükleme
+function searchImages() {
+    const q = document.getElementById("searchInput").value;
+    if (q.trim().length === 0) return;
 
-// arama
-searchInput.addEventListener('input', (e)=>{
-  const q = e.target.value.trim().toLowerCase();
-  gallery.innerHTML='';
-  shown=0;
-  if(!q){ loadMoreBtn.style.display='block'; loadMore(); return; }
-  const filtered = ITEMS.filter(it => it.title.toLowerCase().includes(q) || (it.tags && it.tags.join(' ').includes(q)));
-  renderItems(filtered);
-  loadMoreBtn.style.display='none';
+    currentCategory = q;
+    page = 1;
+    gallery.innerHTML = "";
+    loadWallpapers();
+}
+
+/* --- DETAY MODAL --- */
+
+function openModal(img) {
+    modal.style.display = "block";
+    modalImg.src = img.dataset.full;
+    downloadBtn.href = img.dataset.download;
+
+    currentImageUrl = img.dataset.full;
+
+    favBtn.innerText = favorites.includes(currentImageUrl)
+        ? "❤️ Favorilerde"
+        : "❤️ Favorilere Ekle";
+}
+
+function closeModal() {
+    modal.style.display = "none";
+}
+
+function toggleFavorite() {
+    if (favorites.includes(currentImageUrl)) {
+        favorites = favorites.filter(f => f !== currentImageUrl);
+        favBtn.innerText = "❤️ Favorilere Ekle";
+    } else {
+        favorites.push(currentImageUrl);
+        favBtn.innerText = "❤️ Favorilerde";
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+/* Sonsuz kaydırma */
+window.addEventListener("scroll", () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+        loadWallpapers();
+    }
 });
+
+loadWallpapers();
