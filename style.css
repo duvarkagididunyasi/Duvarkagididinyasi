@@ -1,132 +1,161 @@
+/* GENEL GÖRÜNÜM */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: white;
+    font-family: Poppins, Arial, sans-serif;
+    background: linear-gradient(135deg, #2b1055, #7597de, #ff4f81);
+    background-size: 300% 300%;
+    animation: gradientMove 10s ease infinite;
+    color: #fff;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 header {
-    background: #222;
-    padding: 20px;
     text-align: center;
-    font-size: 24px;
+    padding: 20px 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
+/* ARAMA ÇUBUĞU */
 .search-box {
-    padding: 15px;
     display: flex;
+    justify-content: center;
+    margin: 20px 0;
     gap: 10px;
-    background: #000;
 }
 
 .search-box input {
-    width: 100%;
-    padding: 10px;
-    background: #222;
+    width: 250px;
+    padding: 12px;
+    border-radius: 12px;
     border: none;
-    color: white;
-    border-radius: 8px;
+    outline: none;
     font-size: 15px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
 }
 
 .search-box button {
-    padding: 10px 15px;
-    background: #333;
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
-    color: white;
     cursor: pointer;
-    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #00eaff, #0078ff);
+    color: white;
+    box-shadow: 0px 4px 15px rgba(0, 200, 255, 0.5);
+    transition: 0.3s;
 }
 
+.search-box button:hover {
+    transform: scale(1.08);
+    box-shadow: 0px 4px 20px rgba(0, 200, 255, 0.8);
+}
+
+/* KATEGORİ BUTONLARI */
 .categories {
     display: flex;
-    overflow-x: auto;
-    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
     padding: 10px;
-    background: #000;
 }
 
 .categories button {
-    padding: 10px 15px;
-    background: #333;
+    padding: 12px 18px;
+    border-radius: 12px;
     border: none;
-    color: white;
     cursor: pointer;
-    border-radius: 8px;
-    font-size: 14px;
+    font-size: 15px;
+    background: linear-gradient(135deg, #ff9153, #ff4f81);
+    color: white;
+    font-weight: bold;
+    box-shadow: 0px 4px 15px rgba(255, 70, 120, 0.5);
+    transition: 0.3s;
 }
 
 .categories button:hover {
-    background: #555;
+    transform: scale(1.1);
+    box-shadow: 0px 4px 20px rgba(255, 70, 120, 0.8);
 }
 
+/* GALERİ */
 .gallery {
-    column-count: 3;
-    column-gap: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+    padding: 20px;
 }
 
 .gallery img {
     width: 100%;
-    margin-bottom: 0;
+    border-radius: 14px;
     cursor: pointer;
-    break-inside: avoid;
+    transition: 0.3s;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
 }
 
-@media (max-width: 900px) {
-    .gallery {
-        column-count: 2;
-    }
+.gallery img:hover {
+    transform: scale(1.05);
 }
 
-@media (max-width: 600px) {
-    .gallery {
-        column-count: 1;
-    }
-}
-
-/* --- DETAY MODALI --- */
-
+/* MODAL */
 .modal {
     display: none;
     position: fixed;
-    z-index: 9999;
+    z-index: 999;
     padding-top: 50px;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.95);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
     display: block;
     margin: auto;
-    max-width: 90%;
-    max-height: 80vh;
-    border-radius: 10px;
+    border-radius: 16px;
+    max-width: 80%;
 }
 
 .close {
     position: absolute;
-    top: 20px;
-    right: 40px;
-    font-size: 50px;
+    top: 30px;
+    right: 50px;
+    font-size: 40px;
     cursor: pointer;
-}
-
-.modal-buttons {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.modal-buttons a,
-.modal-buttons button {
-    padding: 12px 20px;
-    margin: 10px;
-    background: #222;
-    border: none;
     color: white;
-    border-radius: 8px;
-    font-size: 16px;
+}
+
+/* MODAL BUTONLARI */
+.modal-buttons {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.modal-buttons a, .modal-buttons button {
+    padding: 12px 18px;
+    margin: 5px;
+    background: linear-gradient(135deg, #00ff95, #00c2ff);
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.modal-buttons a:hover,
+.modal-buttons button:hover {
+    transform: scale(1.1);
+    color: #fff;
 }
