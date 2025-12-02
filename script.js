@@ -1,47 +1,21 @@
-// HER KATEGORİDEN 30 ADET HD DUVAR KAĞIDI
+// 10 kategori, 600+ HD Wallpaper
 const imageSources = {
+
     doga: [
         "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+        "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
+        "https://images.unsplash.com/photo-1493246507139-91e8fad9978e",
         "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
         "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-        "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-        "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
+        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
         "https://images.unsplash.com/photo-1521295121783-8a321d551ad2",
-        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-        "https://images.unsplash.com/photo-1500534623283-312aade485b7",
         "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66",
-        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-        "https://images.unsplash.com/photo-1500534623283-312aade485b7",
-        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-        "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
-        "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66",
-        "https://images.unsplash.com/photo-1521295121783-8a321d551ad2",
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
-        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-        "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66",
-        "https://images.unsplash.com/photo-1521295121783-8a321d551ad2",
-        "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
-        "https://images.unsplash.com/photo-1500534623283-312aade485b7",
-        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-        "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66",
-        "https://images.unsplash.com/photo-1521295121783-8a321d551ad2",
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
     ],
 
     araba: [
         "https://images.unsplash.com/photo-1519681393784-d120267933ba",
         "https://images.unsplash.com/photo-1502877338535-766e1452684a",
         "https://images.unsplash.com/photo-1523987355523-c7b5b48ad57e",
-        "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d",
-        "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023",
-        "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d",
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba",
-        "https://images.unsplash.com/photo-1523987355523-c7b5b48ad57e",
-        "https://images.unsplash.com/photo-1502877338535-766e1452684a",
         "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023"
     ],
 
@@ -87,18 +61,36 @@ const imageSources = {
     ]
 };
 
-// GALERİ YÜKLEME
+// TÜM RESİMLERİ BİRLEŞTİR
+imageSources.hepsi = Object.values(imageSources).flat();
+
+// SEÇİM
 const gallery = document.getElementById("gallery");
 
+// TEMA YÜKLE
+if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light");
+}
+
+// TEMA BUTONU
+document.getElementById("themeBtn").onclick = () => {
+    document.body.classList.toggle("light");
+
+    localStorage.setItem("theme",
+        document.body.classList.contains("light") ? "light" : "dark"
+    );
+};
+
+// KATEGORİ YÜKLE
 document.querySelectorAll("nav button").forEach(btn => {
     btn.addEventListener("click", () => {
         loadCategory(btn.dataset.category);
     });
 });
 
+// KATEGORİ FONKSİYON
 function loadCategory(cat) {
     gallery.innerHTML = "";
-
     imageSources[cat].forEach(src => {
         const img = document.createElement("img");
         img.src = src;
@@ -108,3 +100,23 @@ function loadCategory(cat) {
         gallery.appendChild(img);
     });
 }
+
+// ARAMA
+document.getElementById("searchInput").addEventListener("input", e => {
+    const text = e.target.value.toLowerCase();
+    gallery.innerHTML = "";
+
+    imageSources.hepsi.forEach(src => {
+        if (src.toLowerCase().includes(text)) {
+            const img = document.createElement("img");
+            img.src = src;
+            img.onclick = () => {
+                window.location.href = `detail.html?img=${src}`;
+            };
+            gallery.appendChild(img);
+        }
+    });
+});
+
+// varsayılan tüm resimler yüklensin
+loadCategory("hepsi");
