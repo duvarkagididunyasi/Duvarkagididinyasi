@@ -1,64 +1,132 @@
 body {
-    background: #0d0d0d;
-    color: white;
     margin: 0;
     font-family: Arial, sans-serif;
-    text-align: center;
+    background: #111;
+    color: white;
 }
 
-.title {
-    margin: 20px 0;
-    font-size: 28px;
+header {
+    background: #222;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.search-box {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    background: #000;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px;
+    background: #222;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.search-box button {
+    padding: 10px 15px;
+    background: #333;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.categories {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+    background: #000;
+}
+
+.categories button {
+    padding: 10px 15px;
+    background: #333;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.categories button:hover {
+    background: #555;
 }
 
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 10px;
-    padding: 10px;
+    column-count: 3;
+    column-gap: 0;
 }
 
 .gallery img {
     width: 100%;
-    height: 260px;
-    object-fit: cover;
-    border-radius: 8px;
+    margin-bottom: 0;
     cursor: pointer;
-    transition: 0.3s;
+    break-inside: avoid;
 }
 
-.gallery img:hover {
-    transform: scale(1.05);
+@media (max-width: 900px) {
+    .gallery {
+        column-count: 2;
+    }
 }
 
-.loading {
-    padding: 20px;
-    color: #aaa;
+@media (max-width: 600px) {
+    .gallery {
+        column-count: 1;
+    }
 }
 
-.admin-body {
-    background: #111;
-    padding: 20px;
+/* --- DETAY MODALI --- */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
 }
 
-.admin-box {
+.modal-content {
+    display: block;
+    margin: auto;
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 10px;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.modal-buttons a,
+.modal-buttons button {
+    padding: 12px 20px;
+    margin: 10px;
     background: #222;
-    padding: 20px;
-    border-radius: 8px;
-    display: inline-block;
-}
-
-.admin-box input, .admin-box select {
-    width: 250px;
-    padding: 10px;
-    margin: 10px 0;
-}
-
-.admin-box button {
-    padding: 10px 16px;
-    background: #00a8ff;
     border: none;
     color: white;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
 }
