@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin - Duvar Kağıdı Dünyası</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body{padding:20px}
+    .panel{max-width:900px;margin:auto;background:rgba(255,255,255,0.03);padding:16px;border-radius:10px}
+    label{display:block;margin-top:10px}
+    input[type="text"], select, textarea{width:100%;padding:8px;border-radius:6px;border:none;margin-top:6px}
+    .row{display:flex;gap:8px}
+    .row > *{flex:1}
+    .small{max-width:140px}
+    .list img{max-width:120px;border-radius:6px;margin:6px}
+    .controls{display:flex;gap:8px;margin-top:10px}
+    .danger{background:#d9534f;color:white;padding:8px;border:none;border-radius:6px}
+    .primary{background:var(--accent);color:#001;padding:8px;border:none;border-radius:6px}
+  </style>
+</head>
+<body>
+
+<div class="panel">
+  <h2>Admin Paneli</h2>
+
+  <div id="authArea">
+    <label>Parola (ilk kullanım için belirle)</label>
+    <input id="adminPass" type="password" placeholder="Parola">
+    <div class="controls">
+      <button id="setPass" class="primary">Parolayı Kaydet / Giriş</button>
+      <button id="logout" class="danger">Çıkış</button>
+    </div>
+    <hr>
+  </div>
+
+  <div id="adminArea" style="display:none">
+    <label>Kategori</label>
+    <select id="catSelect">
+      <option value="doga">doga</option>
+      <option value="araba">araba</option>
+      <option value="manzara">manzara</option>
+      <option value="minimal">minimal</option>
+      <option value="anime">anime</option>
+      <option value="4k">4k</option>
+      <option value="hayvan">hayvan</option>
+      <option value="insan">insan</option>
+      <option value="soyut">soyut</option>
+      <option value="oyun">oyun</option>
+    </select>
+
+    <label>Resim URL (ör. https://images.unsplash.com/....)</label>
+    <input id="imgUrl" type="text" placeholder="Resim URL'si">
+
+    <div class="controls">
+      <button id="addImg" class="primary">Ekle</button>
+      <button id="clearCustom" class="danger">Tüm Özel Resimleri Sil</button>
+    </div>
+
+    <hr>
+    <h3>Mevcut Özel Resimler</h3>
+    <div id="customList" class="list"></div>
+
+    <hr>
+    <h3>JSON Dışa / İçe Aktar</h3>
+    <textarea id="jsonArea" rows="6" placeholder="Buraya JSON yapıştırın veya dışa aktarmak için altta 'Dışa Aktar' butonuna basın"></textarea>
+    <div class="controls">
+      <button id="exportJson" class="primary">Dışa Aktar</button>
+      <button id="importJson" class="primary">İçe Aktar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // basit parola kontrol (localStorage)
+  const adminPassKey = 'dkd_admin_pass';
+  const passInput = document.getElementById('adminPass');
+  const setPassBtn = document.getElementById('setPass');
+  const logoutBtn = document.getElementById('logout');
+  const adminArea = document.getElementById('adminArea');
+  const authArea = document.getElementById('authArea');
+
+  function checkAuth() {
+    const stored = localStorage.getItem(adminPassKey);
+    if (stored) {
+      authArea.style.display = 'none';
+      adminArea.style.display = 'block';
+      renderCustomList();
+    } else {
+      authArea.style.display = 'block';
+      adminArea.style.display = 'none';
+    }
+  }
+  setPassBtn.onclick = () => {
+    const v = passInput.value.trim();
+    if (!v) return alert('Parola boş olamaz');
+    localStorage.setItem(adminPassKey, v);
+    alert('Parola kaydedildi. Admin alanına yönlendiriliyorsunuz.');
+    checkAuth();
+  };
+  logoutBtn.onclick = () => {
+    localStorage.removeItem(adminPassKey);
+    checkAuth();
+  };
+
+  // custom images yönetimi
+  const catSelect = document.getElementById('catSelect');
+  const imgUrl = document.getElementById('imgUrl');
+  const addImg = document.getElementById('addImg');
+  const customList = document.getElementById('customList');
+  const clearCustom = document.getElementById('clearCustom');
+  const exportJson = document.getElementById('exportJson');
+  const importJson = document.getElementById('importJson');
+  const jsonArea = document.getElementById('jsonArea');
+
+  function getCustom() {
+    try { return JSON.parse(localStorage.getItem('dkd_custom_images') || '{}'); } catch(e){ return {}; }
+  }
+  function setCustom(o){ localStorage.setItem('dkd_custom_images', JSON.stringify(o)); window.DKD && window.DKD.notifyDataChanged && window.DKD.notifyDataChanged(); }
+
+  function renderCustomList() {
+    const data = getCustom();
+    customList.innerHTML = '';
+    Object.keys(data).forEach(cat => {
+      data[cat].forEach((url, idx) => {
+        const div = document.createElement('div');
+        div.style.display = 'inline-block';
+        div.innerHTML = `<div style="width:200px;padding:6px;margin:6px;background:rgba(255,255,255,0.02);border-radius:8px">
+          <img src="${url}" style="width:100%;height:110px;object-fit:cover;border-radius:6px"><div style="margin-top:6px"><small>${cat}</small><br><button data-cat="${cat}" data-idx="${idx}" class="delBtn">Sil</button></div></div>`;
+        customList.appendChild(div);
+      });
+    });
+
+    document.querySelectorAll('.delBtn').forEach(b=>{
+      b.onclick = ()=>{
+        const c = b.dataset.cat, i = Number(b.dataset.idx);
+        const d = getCustom();
+        d[c].splice(i,1);
+        if (d[c].length===0) delete d[c];
+        setCustom(d);
+        renderCustomList();
+      };
+    });
+  }
+
+  addImg.onclick = () => {
+    const url = imgUrl.value.trim();
+    if (!url) return alert('URL boş');
+    const cat = catSelect.value;
+    const d = getCustom();
+    if (!d[cat]) d[cat]=[];
+    d[cat].unshift(url);
+    setCustom(d);
+    imgUrl.value='';
+    renderCustomList();
+    alert('Resim eklendi.');
+  };
+
+  clearCustom.onclick = () => {
+    if (!confirm('Tüm özel resimleri silmek istediğine emin misin?')) return;
+    localStorage.removeItem('dkd_custom_images');
+    window.DKD && window.DKD.notifyDataChanged && window.DKD.notifyDataChanged();
+    renderCustomList();
+  };
+
+  exportJson.onclick = () => {
+    const d = getCustom();
+    jsonArea.value = JSON.stringify(d, null, 2);
+    alert('JSON hazır. Kopyalayabilirsiniz.');
+  };
+
+  importJson.onclick = () => {
+    try {
+      const parsed = JSON.parse(jsonArea.value);
+      setCustom(parsed);
+      renderCustomList();
+      alert('İçe aktarma tamam.');
+    } catch (e) {
+      alert('Geçersiz JSON');
+    }
+  };
+
+  checkAuth();
+</script>
+</body>
+</html>
