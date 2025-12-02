@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Duvar Kağıdı</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            text-align: center;
+        }
+        img {
+            width: 95%;
+            max-height: 85vh;
+            object-fit: contain;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #00aaff;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<img id="full">
+<a id="download" download>İndir</a>
+
+<script>
+    const url = new URLSearchParams(window.location.search);
+    const img = url.get("img");
+
+    if (!img) {
+        document.body.innerHTML = "<h1 style='color:white'>Resim bulunamadı</h1>";
+    } else {
+        document.getElementById("full").src = img;
+        document.getElementById("download").href = img;
+    }
+</script>
+
+</body>
+</html>
