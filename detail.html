@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>Duvar Kağıdı</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Duvar Kağıdı</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="detail-page">
 
-<div class="ad-banner">Reklam Alanı</div>
+<header>
+  <h1><a href="index.html">Duvar Kağıdı Dünyası</a></h1>
+  <div class="top-right"><a href="index.html">Geri</a></div>
+</header>
 
-<img id="full">
+<div class="ad-banner">Reklam Alanı (örnek)</div>
 
-<a id="download" download>İndir</a>
+<main class="detail-container">
+  <img id="full" alt="Wallpaper">
+  <div class="detail-actions">
+    <a id="download" class="btn" download>İndir (Orijinal)</a>
+    <a id="openNew" class="btn" target="_blank">Yeni Sekmede Aç</a>
+  </div>
+</main>
 
-<div class="ad-banner">Reklam Alanı</div>
+<div class="ad-banner">Reklam Alanı (örnek)</div>
 
 <script>
-const url = new URLSearchParams(window.location.search);
-const img = url.get("img");
+const params = new URLSearchParams(window.location.search);
+const img = params.get("img");
+const full = document.getElementById('full');
+const download = document.getElementById('download');
+const openNew = document.getElementById('openNew');
 
-document.getElementById("full").src = img;
-document.getElementById("download").href = img;
+if (!img) {
+  document.body.innerHTML = "<h2 style='color:#fff;text-align:center;padding:40px'>Resim bulunamadı.</h2>";
+} else {
+  full.src = img;
+  download.href = img;
+  openNew.href = img;
+}
 </script>
 
 </body>
