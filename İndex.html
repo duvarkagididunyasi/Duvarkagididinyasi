@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Duvar Kağıdı Dünyası</title>
+  <meta name="description" content="Duvar Kağıdı Dünyası — HD ve 4K duvar kağıtları. Kategoriler: Doğa, Minimal, Anime, Araba ve daha fazlası.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- logo (svg) -->
+      <a class="logo" href="index.html" aria-label="Duvar Kağıdı Dünyası">
+        <!-- simple wallpaper icon + text -->
+        <svg class="logo-ico" width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2" fill="#00bfff"/>
+          <circle cx="7" cy="8" r="1.7" fill="#ffffff"/>
+          <path d="M3 18 C6 15, 10 15, 13 18 C16 21, 20 21, 21 18" stroke="#ffffff" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span class="logo-text">Duvar Kağıdı Dünyası</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Ana navigasyon">
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="about.html">Hakkında</a>
+        <a href="contact.html">İletişim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>En yeni ve popüler duvar kağıtları</h1>
+      <p>Kategorilere göre gez, beğendiğini indir. Telefon ve masaüstü için yüksek çözünürlüklü arka planlar.</p>
+      <div class="search-wrap">
+        <input id="search" class="search" placeholder="Ara: örn. doğa, neon, anime..." />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Popüler Duvar Kağıtları</h2>
+      <div id="gallery" class="grid" aria-live="polite"></div>
+      <div class="load-more-wrap">
+        <button id="loadMore" class="btn">Daha Fazla Göster</button>
+      </div>
+    </section>
+
+    <section class="categories">
+      <h2 class="section-title">Kategoriler</h2>
+      <div class="cats">
+        <a href="kategori_doga.html" class="cat">Doğa</a>
+        <a href="kategori_minimal.html" class="cat">Minimal</a>
+        <a href="kategori_anime.html" class="cat">Anime & Oyun</a>
+        <a href="kategori_araba.html" class="cat">Araba</a>
+        <a href="kategori_amoled.html" class="cat">AMOLED / Siyah</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Duvar Kağıdı Dünyası — Tüm hakları saklıdır.</p>
+      <p><a href="privacy.html">Gizlilik Politikası</a></p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
